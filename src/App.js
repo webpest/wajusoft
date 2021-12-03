@@ -1,11 +1,8 @@
 import { useState } from "react";
-
+import useStickyState from "./use-sticky";
 function App() {
   const [input, setInput] = useState();
-  const [numberList, setNumberList] = useState([
-    { number: 100, isChecked: false },
-    { number: 200, isChecked: true },
-  ]);
+  const [numberList, setNumberList] = useStickyState([]);
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
