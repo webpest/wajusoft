@@ -1,26 +1,33 @@
-// Input that accept only numbers
-// Add number to list after button press
 import { useState } from "react";
 
 function App() {
   const [input, setInput] = useState();
-  const [numberList, setNumberList] = useState([]);
+  const [numberList, setNumberList] = useState([
+    { number: 100, isChecked: false },
+    { number: 200, isChecked: true },
+  ]);
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     setInput(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newNumberList = [...numberList, { number: input, isChecked: false }];
-    // const highest = Math.max(...numberList);
-    // console.log(highest);
-    // console.log(newNumberList)
-    console.log(newNumberList);
     setNumberList(newNumberList);
     setInput("");
+  };
+
+  const handleCheckbox = (num) => {
+    const updatedState = numberList.map((list, i) => {
+      if (list.number === num) {
+        return { ...list, isChecked: !list.isChecked };
+      }
+
+      return list;
+    });
+
+    setNumberList(updatedState);
   };
 
   return (
@@ -29,8 +36,23 @@ function App() {
         {numberList.map((list, i) => (
           <li key={i} className="list-group-item">
             <div>
-              <input className="form-check-input me-1" type="checkbox" />
-              {list.number}
+              <input
+                className="form-check-input me-1 "
+                type="checkbox"
+                checked={numberList[i].isChecked}
+                value={list.number}
+                onChange={(e) => handleCheckbox(list.number)}
+              />
+              <label
+                className="form-check-label"
+                style={{
+                  textDecoration: numberList[i].isChecked
+                    ? "line-through"
+                    : "none",
+                }}
+              >
+                {list.number}
+              </label>
             </div>
           </li>
         ))}
@@ -48,7 +70,7 @@ function App() {
             autoComplete="false"
           />
           <button className="btn btn-primary" type="submit" id="button-addon2">
-            Button
+            Add
           </button>
         </div>
       </form>
